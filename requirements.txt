@@ -5,3 +5,4 @@ unidecode
 #langchain
 #openai
 tabulate
+streamlit-aggrid
