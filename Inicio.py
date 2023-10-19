@@ -1,4 +1,4 @@
-from tkinter.messagebox import NO
+#from tkinter.messagebox import NO
 import streamlit as st
 from registro import registro, catalogo, reporte
 import pandas as pd

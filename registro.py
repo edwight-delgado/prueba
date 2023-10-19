@@ -54,31 +54,49 @@ def reporte(search, fecha_search):
 
         #df_fecha = filterd_df.groupby('fecha').sum()
         df_metodo = filterd_df.groupby('metodo_pago')['venta'].sum()
-        df_direccion = filterd_df.groupby('direccion')['venta'].sum()
-        df_titulo = filterd_df.groupby('titulo')['venta'].sum()
+        df_direccion = filterd_df.sort_values('venta',ascending=False).groupby('direccion')['venta'].sum()
+        df_titulo = filterd_df.sort_values('cantidad',ascending=False).groupby('titulo')['cantidad'].sum()
+        
+        st.markdown(f"## Total de Ventas por Metodo de Pago")
         st.bar_chart(
             data=df_metodo,
             y="venta",
             )
-        st.write(df_metodo)
-
+        #st.write(df_metodo)
+        st.markdown("## Que Direccion Produce Mejores Ventas")
         st.bar_chart(
             data=df_direccion,
             y="venta",
             )
+        st.markdown("## Productos Más Vendidos del Dia")
         st.bar_chart(
             data=df_titulo,
-            y="venta",
+            y="cantidad",
             )
-        st.write(df_direccion)
+        #st.write(df_direccion)
         #st.write(filterd_df.groupby('metodo_pago')['venta'].sum())
     else:
+        st.markdown(f"## Total de Ventas por Dia")
+        df_metodo = excel_file.groupby('metodo_pago')['venta'].sum()
+        df_direccion = excel_file.sort_values('venta',ascending=True).groupby('direccion')['venta'].sum()
+        df_titulo = excel_file.sort_values('cantidad',ascending=False).groupby('titulo')['cantidad'].sum()
 
         #data  = excel_file[['precio','neto']].apply(np.sum)
         df_fecha = excel_file.groupby('fecha').sum()
         st.bar_chart(data=df_fecha,y="venta")
         st.write(df_fecha)
-        #st.write(excel_file.groupby(['fecha','direccion']).sum())
+        st.markdown("## Que Direccion Produce Mejores Ventas acumuladas")
+        st.bar_chart(
+            data=df_direccion,
+            y="venta",
+            )
+        st.markdown("## Productos Más Vendidos")
+        st.write(df_titulo)
+        st.bar_chart(
+            data=df_titulo,
+            y="cantidad",
+            )
+        st.write(df_titulo)
 
     #st.markdown(f"## Total ventas: **{data['precio']}**")
     #st.markdown(f"## Total neto: **{data['neto']}**")
